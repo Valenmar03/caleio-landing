@@ -1,0 +1,917 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const APP_URL = "https://app.caleio.app/register";
+
+const faqs = [
+  {
+    question: "¿Qué es Caleio y cómo puede ayudarme a gestionar turnos online?",
+    answer:
+      "Caleio es una plataforma web para gestionar tu agenda de turnos, clientes y equipo desde un solo lugar. Te permite tomar reservas, enviar recordatorios automáticos y llevar el control de caja sin planillas ni papel.",
+  },
+  {
+    question: "¿Cómo funciona el sistema de turnos online?",
+    answer:
+      "Tus clientes pueden reservar turnos desde un link personalizado tuyo, 24/7. Vos recibís la notificación, y ellos reciben confirmación y recordatorios automáticos por WhatsApp o email.",
+  },
+  {
+    question: "¿Cómo me integro con MercadoPago para cobrar turnos?",
+    answer:
+      "Podés conectar tu cuenta de MercadoPago en pocos pasos desde la configuración. Tus clientes pagan la seña al reservar, lo que reduce las inasistencias a casi cero.",
+  },
+  {
+    question: "¿Qué ventajas tiene automatizar los recordatorios por WhatsApp?",
+    answer:
+      "Los recordatorios automáticos reducen las inasistencias hasta un 80%. Se envían 24 horas antes del turno y, si el cliente no confirma, recibís una alerta para tomar acción a tiempo.",
+  },
+  {
+    question: "¿Caleio es gratis?",
+    answer:
+      "Tenés 14 días de prueba gratuita con acceso a todas las funciones, sin tarjeta de crédito. Luego el plan es de USD $12 por hasta 2 profesionales, todo incluido.",
+  },
+  {
+    question: "¿Es necesario que mis clientes se registren para reservar un turno?",
+    answer:
+      "No. Tus clientes solo necesitan ingresar su nombre, email y teléfono. Sin descargas, sin cuentas, sin fricción.",
+  },
+  {
+    question: "¿Cuánto tiempo lleva activar Caleio y empezar a usarlo?",
+    answer:
+      "Menos de 10 minutos. Creás tu cuenta, cargás tus servicios y horarios, y compartís tu link de reserva. Listo.",
+  },
+];
+
+const businesses = [
+  {
+    label: "Peluquerías y Barberías",
+    svg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-8 h-8"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>`,
+  },
+  {
+    label: "Manicura y Pedicura",
+    svg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-8 h-8"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>`,
+  },
+  {
+    label: "Centros de Estética",
+    svg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-8 h-8"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg>`,
+  },
+  {
+    label: "Psicólogos y Psiquiatras",
+    svg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-8 h-8"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>`,
+  },
+  {
+    label: "Gimnasios y Clubes",
+    svg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-8 h-8"><path d="M6.5 6.5h11"/><path d="M6.5 17.5h11"/><path d="M3 9.5v5"/><path d="M21 9.5v5"/><rect x="1" y="8" width="4" height="8" rx="1"/><rect x="19" y="8" width="4" height="8" rx="1"/></svg>`,
+  },
+];
+
+// const testimonials = [
+//   { name: "Noelia M.", role: "Peluquera y Colorista", handle: "@noeliacuts", text: "Antes llenaba una libreta de papel. Ahora todo está en Caleio y mis clientes reservan solos. No volvería a lo de antes." },
+//   { name: "Tony M.", role: "Barbero", handle: "@tonymessina", text: "Los recordatorios automáticos me cambiaron la vida. Las inasistencias bajaron a casi cero desde que empecé a cobrar seña." },
+//   { name: "Patricia E.", role: "Psicóloga", handle: "@patriciaespanol", text: "Mis pacientes pueden pedir turno a cualquier hora sin tener que llamarme. La agenda se llena sola." },
+//   { name: "Emil H.", role: "Centro de Estética", handle: "@emilhov", text: "Gestiono 4 profesionales desde una sola pantalla. El dashboard de métricas me ayuda a entender qué servicios funcionan mejor." },
+// ];
+---
+
+<Layout>
+  <!-- Skip to main content (accessibility) -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:bg-teal-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:font-semibold focus:text-sm">
+    Ir al contenido principal
+  </a>
+  <!-- NAV -->
+  <nav id="navbar" class="fixed top-4 left-0 right-0 z-50 px-4 transition-all duration-300">
+    <div class="max-w-6xl mx-auto bg-white/95 backdrop-blur rounded-2xl shadow-lg shadow-slate-200/60 border border-slate-100 px-5 h-14 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2.5">
+        <img src="/logo.png" alt="Caleio" class="w-8 h-8 object-contain" />
+        <span class="text-lg font-bold text-slate-900 tracking-tight">Caleio</span>
+      </a>
+
+      <!-- Desktop nav -->
+      <div class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600">
+        <a href="#features" class="hover:text-teal-600 transition-colors">Funcionalidades</a>
+        <a href="#negocios" class="hover:text-teal-600 transition-colors">Tu negocio</a>
+        <a href="#pricing" class="hover:text-teal-600 transition-colors">Precios</a>
+        <a href="#faq" class="hover:text-teal-600 transition-colors">FAQ</a>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- Country selector -->
+        <div class="relative" id="country-selector">
+          <button
+            id="country-btn"
+            class="flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors px-2 py-1 rounded-lg hover:bg-slate-100"
+          >
+            <img id="country-flag" src="https://flagcdn.com/20x15/ar.png" alt="AR" class="w-5 h-auto rounded-sm" />
+            <svg class="w-3 h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div
+            id="country-dropdown"
+            class="hidden absolute right-0 top-full mt-2 bg-white border border-slate-100 rounded-xl shadow-lg shadow-slate-200/60 py-1 min-w-40 z-50 max-h-72 overflow-y-auto"
+          >
+            {[
+              { name: "Argentina", code: "ar" },
+              { name: "México", code: "mx" },
+              { name: "Colombia", code: "co" },
+              { name: "Chile", code: "cl" },
+              { name: "Uruguay", code: "uy" },
+              { name: "Perú", code: "pe" },
+              { name: "Venezuela", code: "ve" },
+            ].map((c) => (
+              <button
+                class="country-option w-full flex items-center gap-2.5 px-3 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-700 transition-colors"
+                data-code={c.code}
+              >
+                <img src={`https://flagcdn.com/20x15/${c.code}.png`} alt={c.code} class="w-5 h-auto rounded-sm" />
+                <span>{c.name}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <!-- Desktop buttons -->
+        <a href={APP_URL} class="hidden md:block text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+          Ingresar
+        </a>
+        <a href={APP_URL} class="hidden md:block rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700 transition-colors">
+          Registrarse gratis
+        </a>
+
+        <!-- Mobile register button -->
+        <a href={APP_URL} class="md:hidden rounded-lg bg-teal-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-teal-700 transition-colors">
+          Registrarse
+        </a>
+
+        <!-- Hamburger -->
+        <button id="menu-btn" class="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5" aria-label="Menú">
+          <span class="hamburger-line block w-5 h-0.5 bg-slate-700 transition-all duration-200"></span>
+          <span class="hamburger-line block w-5 h-0.5 bg-slate-700 transition-all duration-200"></span>
+          <span class="hamburger-line block w-5 h-0.5 bg-slate-700 transition-all duration-200"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="md:hidden max-w-6xl mx-auto mt-2 bg-white/95 backdrop-blur rounded-2xl shadow-lg border border-slate-100 px-5 space-y-1 overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0">
+      <a href="#features" class="mobile-nav-link block py-2.5 text-sm font-medium text-slate-700 hover:text-teal-600 transition-colors border-b border-slate-100">Funcionalidades</a>
+      <a href="#negocios" class="mobile-nav-link block py-2.5 text-sm font-medium text-slate-700 hover:text-teal-600 transition-colors border-b border-slate-100">Tu negocio</a>
+      <a href="#pricing" class="mobile-nav-link block py-2.5 text-sm font-medium text-slate-700 hover:text-teal-600 transition-colors border-b border-slate-100">Precios</a>
+      <a href="#faq" class="mobile-nav-link block py-2.5 text-sm font-medium text-slate-700 hover:text-teal-600 transition-colors border-b border-slate-100">FAQ</a>
+      <div class="pt-3 flex flex-col gap-2">
+        <a href={APP_URL} class="block w-full text-center rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:border-teal-400 hover:text-teal-600 transition-colors">
+          Ingresar
+        </a>
+        <a href={APP_URL} class="block w-full text-center rounded-xl bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-teal-700 transition-colors">
+          Registrarse gratis
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main-content">
+  <!-- HERO -->
+  <section class="relative overflow-hidden bg-linear-to-b from-teal-100 via-teal-50 to-teal-50 pt-32 pb-28 px-5">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-teal-200/70 via-teal-50/50 to-transparent pointer-events-none" />
+    <div class="relative max-w-4xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 rounded-full bg-teal-50 border border-teal-200 px-4 py-1.5 text-sm font-medium text-teal-700 mb-8">
+        <span class="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse"></span>
+        Sistema de turnos online
+      </div>
+
+      <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-slate-900 leading-[1.05] tracking-tight mb-6">
+        App para gestionar<br />
+        tu agenda de turnos<br />
+        <span class="text-teal-600">gratis</span>
+      </h1>
+
+      <p class="text-xl text-slate-500 max-w-2xl mx-auto mb-10 leading-relaxed">
+        Gestioná tu agenda de turnos y reservas de manera simple, fácil y gratuita. Sin planillas, sin papel, sin caos.
+      </p>
+
+      <div class="flex flex-col items-center gap-4 mb-14">
+        <div class="flex flex-col sm:flex-row items-center gap-3">
+          <a
+            href={APP_URL}
+            class="rounded-xl bg-teal-600 px-10 py-4 text-base font-semibold text-white hover:bg-teal-700 transition-colors shadow-lg shadow-teal-200"
+          >
+            Creá tu cuenta gratis
+          </a>
+          <a
+            href="#features"
+            class="rounded-xl border border-slate-200 px-8 py-4 text-base font-semibold text-slate-700 hover:border-teal-300 hover:text-teal-600 transition-colors"
+          >
+            Ver funcionalidades
+          </a>
+        </div>
+        <p class="text-sm text-slate-400">14 días de prueba gratis · Sin tarjeta de crédito · Cancelá cuando quieras</p>
+      </div>
+
+      <!-- Integrations -->
+      <div class="flex flex-col items-center gap-4">
+        <p class="text-xs font-medium text-slate-400 uppercase tracking-widest">Nos integramos con</p>
+        <div class="flex items-center gap-8 flex-wrap justify-center">
+          <!-- WhatsApp -->
+          <svg viewBox="0 0 24 24" class="w-10 h-10" fill="#25D366">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          <!-- MercadoPago -->
+          <img src="/LogoMP.png" alt="MercadoPago" class="h-12 w-auto object-contain" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hero wave divider -->
+  <div class="overflow-hidden -mb-1 bg-teal-50">
+    <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="w-full h-14 block">
+      <path d="M0,30 C360,0 1080,60 1440,30 L1440,60 L0,60 Z" fill="white" />
+    </svg>
+  </div>
+
+  <!-- FEATURES BENTO -->
+  <section id="features" class="py-24 px-5 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-14">
+        <div class="inline-flex items-center gap-2 rounded-full bg-teal-50 border border-teal-100 px-3 py-1 text-xs font-semibold text-teal-600 uppercase tracking-wider mb-4">
+          Funcionalidades
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+          Todo lo que necesitás para <span class="text-teal-600">tu negocio</span>
+        </h2>
+        <p class="text-lg text-slate-500 max-w-xl mx-auto">Herramientas pensadas para profesionales independientes y pequeños equipos.</p>
+      </div>
+
+      <!-- Bento grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+        <!-- Card 1: Big calendar (spans 1 col, 2 rows) -->
+        <div class="md:row-span-2 rounded-3xl bg-teal-600 p-6 flex flex-col justify-between min-h-64 overflow-hidden relative">
+          <!-- Mock calendar UI -->
+          <div class="absolute inset-x-4 top-4 bottom-0 rounded-t-2xl bg-white/15 backdrop-blur-sm border border-white/20 overflow-hidden">
+            <div class="bg-white/20 px-3 py-2 flex items-center justify-between border-b border-white/10">
+              <span class="text-white text-xs font-semibold">Marzo 2026</span>
+              <div class="flex gap-1">
+                <div class="w-1.5 h-1.5 rounded-full bg-white/50"></div>
+                <div class="w-1.5 h-1.5 rounded-full bg-white/50"></div>
+              </div>
+            </div>
+            <div class="p-2 grid grid-cols-7 gap-0.5 text-center">
+              {["L","M","X","J","V","S","D"].map(d => (
+                <div class="text-white/50 text-[9px] font-medium py-0.5">{d}</div>
+              ))}
+              {Array.from({length: 31}, (_,i) => i+1).map(n => (
+                <div class={`text-[9px] py-1 rounded-sm font-medium ${n === 18 ? "bg-white text-teal-600" : n % 4 === 0 ? "bg-white/20 text-white" : "text-white/60"}`}>
+                  {n > 31 ? "" : n}
+                </div>
+              ))}
+            </div>
+            <!-- Appointment slots -->
+            <div class="px-2 pb-2 space-y-1">
+              <div class="bg-white/90 rounded-lg p-2 flex items-center gap-2">
+                <div class="w-1 h-7 rounded-full bg-teal-500"></div>
+                <div>
+                  <div class="text-[9px] font-semibold text-slate-700">10:00 · Corte + Color</div>
+                  <div class="text-[8px] text-slate-400">Noelia M.</div>
+                </div>
+              </div>
+              <div class="bg-white/90 rounded-lg p-2 flex items-center gap-2">
+                <div class="w-1 h-7 rounded-full bg-teal-400"></div>
+                <div>
+                  <div class="text-[9px] font-semibold text-slate-700">11:30 · Manicura</div>
+                  <div class="text-[8px] text-slate-400">Patricia S.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="relative mt-auto pt-80">
+            <p class="text-white/80 text-xs font-medium mb-1 uppercase tracking-wide">Vista diaria</p>
+            <h3 class="text-white text-xl font-bold">Calendario sincronizado</h3>
+          </div>
+        </div>
+
+        <!-- Card 2: inasistencias -->
+        <div class="rounded-3xl bg-white border border-slate-100 p-7 flex flex-col justify-between shadow-sm shadow-teal-200">
+          <div>
+            <p class="text-slate-500 text-sm leading-snug mb-4">Cobrá una seña y reducí las inasistencias a los turnos</p>
+            <div class="flex items-end gap-1">
+              <span class="text-7xl font-extrabold text-teal-800 leading-none">80</span>
+              <span class="text-4xl font-extrabold text-teal-600 pb-1">%</span>
+            </div>
+            <p class="text-slate-500 text-sm mt-1">menos inasistencias a turnos</p>
+          </div>
+          <!-- Payment methods -->
+          <div class="flex items-center gap-2 mt-4">
+            <img src="/LogoMP.png" alt="MercadoPago" class="h-12 w-auto object-contain" />
+
+          </div>
+        </div>
+
+        <!-- Card 3: Feature chips 2x2 -->
+        <div class="rounded-3xl bg-slate-50 border border-slate-100 p-6">
+          <div class="grid grid-cols-2 gap-3">
+            {[
+              { label: "Agenda diaria", color: "teal", icon: `<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>` },
+              { label: "Recordatorios automáticos", color: "teal", icon: `<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>` },
+              { label: "Gestión de clientes", color: "slate", icon: `<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>` },
+              { label: "WhatsApp & Email", color: "slate", icon: `<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>` },
+            ].map((chip) => (
+              <div class={`rounded-2xl p-4 flex flex-col gap-2 ${chip.color === "teal" ? "bg-teal-600 text-white" : "bg-white border border-slate-100 text-slate-700"}`}>
+                <div class={`w-7 h-7 rounded-lg flex items-center justify-center ${chip.color === "teal" ? "bg-white/20" : "bg-teal-50"}`}>
+                  <svg class={`w-4 h-4 ${chip.color === "teal" ? "text-white" : "text-teal-600"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" set:html={chip.icon} />
+                </div>
+                <span class="text-xs font-semibold leading-tight">{chip.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Card 4: Análisis del negocio -->
+        <div class="rounded-3xl bg-white border border-slate-100 p-6 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <p class="text-sm font-semibold text-slate-700">Análisis del negocio</p>
+            <span class="text-xs text-teal-600 font-medium bg-teal-50 px-2 py-0.5 rounded-full">+24% este mes</span>
+          </div>
+          <!-- Mini bar chart -->
+          <div class="flex items-end gap-1.5 h-16">
+            {[40, 65, 50, 80, 55, 90, 70].map((h) => (
+              <div class="flex-1 rounded-t-sm" style={`height: ${h}%; background: ${h === 90 ? "#0d9488" : "#ccfbf1"};`}></div>
+            ))}
+          </div>
+          <div class="flex justify-between mt-1">
+            {["L","M","X","J","V","S","D"].map(d => (
+              <span class="text-[10px] text-slate-400 flex-1 text-center">{d}</span>
+            ))}
+          </div>
+        </div>
+
+        <!-- Card 5: Roles y accesos -->
+        <div class="rounded-3xl bg-teal-50 border border-teal-100 p-6">
+          <div class="w-10 h-10 rounded-xl bg-teal-600 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <h3 class="text-sm font-bold text-slate-900 mb-2">Roles y accesos</h3>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            Cada profesional ve solo su agenda. El admin controla todo el negocio.
+          </p>
+          <div class="flex gap-2 mt-4">
+            <span class="text-xs bg-teal-600 text-white rounded-full px-3 py-1 font-medium">Admin</span>
+            <span class="text-xs bg-white border border-teal-200 text-teal-700 rounded-full px-3 py-1 font-medium">Profesional</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCT SCREENSHOTS -->
+  <section class="py-24 px-5 bg-slate-900">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-12">
+        <div class="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-3 py-1 text-xs font-semibold text-teal-400 uppercase tracking-wider mb-4">
+          Así se ve
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">
+          Diseñado para gestionar sin complicaciones
+        </h2>
+        <p class="text-lg text-slate-400">Todas las herramientas que necesitás, en una sola pantalla.</p>
+      </div>
+
+      <!-- Tab selector -->
+      <div class="flex justify-center gap-2 mb-8 flex-wrap">
+        <button class="screen-tab rounded-full px-5 py-2 text-sm font-semibold transition-colors bg-teal-600 text-white" data-screen="agenda">
+          Agenda
+        </button>
+        <button class="screen-tab rounded-full px-5 py-2 text-sm font-semibold transition-colors bg-white/10 text-slate-300 hover:bg-white/20" data-screen="dashboard">
+          Dashboard
+        </button>
+        <button class="screen-tab rounded-full px-5 py-2 text-sm font-semibold transition-colors bg-white/10 text-slate-300 hover:bg-white/20" data-screen="metricas">
+          Métricas
+        </button>
+      </div>
+
+      <!-- Browser mockup -->
+      <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/60">
+        <!-- Browser bar -->
+        <div class="bg-slate-800 px-4 py-3 flex items-center gap-3">
+          <div class="flex gap-1.5 shrink-0">
+            <div class="w-3 h-3 rounded-full bg-red-500/70"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-500/70"></div>
+            <div class="w-3 h-3 rounded-full bg-green-500/70"></div>
+          </div>
+          <div class="flex-1">
+            <div class="bg-slate-700 rounded-md px-3 py-1 text-xs text-slate-400 text-center max-w-xs mx-auto">
+              app.caleio.app
+            </div>
+          </div>
+        </div>
+        <!-- Screenshots -->
+        <img id="screen-agenda" src="/agenda.png" alt="Vista de agenda en Caleio" class="w-full block" />
+        <img id="screen-dashboard" src="/dashboard.png" alt="Dashboard de Caleio" class="w-full hidden" />
+        <img id="screen-metricas" src="/metricas.png" alt="Métricas de Caleio" class="w-full hidden" />
+      </div>
+    </div>
+  </section>
+
+  <!-- BUSINESS TYPES -->
+  <section id="negocios" class="py-24 px-5 bg-teal-50/60 border-y border-slate-100">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-14">
+        <div class="inline-flex items-center gap-2 rounded-full bg-teal-50 border border-teal-100 px-3 py-1 text-xs font-semibold text-teal-600 uppercase tracking-wider mb-4">
+          Tu negocio
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+          Se adapta a tu negocio
+        </h2>
+        <p class="text-lg text-slate-500">Negocios y profesionales que utilizan Caleio</p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+        {businesses.map((b) => (
+          <div class="flex flex-col items-center gap-3 bg-white rounded-2xl border border-slate-100 p-5 hover:border-teal-200 hover:shadow-sm transition-all text-center">
+            <div class="w-14 h-14 rounded-xl bg-teal-50 flex items-center justify-center text-teal-600" set:html={b.svg} />
+            <span class="text-xs font-semibold text-slate-700 leading-tight">{b.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL -->
+  <section class="py-24 px-5 bg-white border-y border-slate-100">
+    <div class="max-w-2xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 rounded-full bg-teal-50 border border-teal-100 px-3 py-1 text-xs font-semibold text-teal-600 uppercase tracking-wider mb-10">
+        Clientes
+      </div>
+
+      <div class="text-8xl font-serif text-teal-100 leading-none select-none mb-2">"</div>
+
+      <div class="flex justify-center gap-1 mb-6">
+        {Array.from({length: 5}).map(() => (
+          <svg class="w-5 h-5 text-teal-500" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+          </svg>
+        ))}
+      </div>
+
+      <p class="text-xl text-slate-700 leading-relaxed mb-8 font-medium">
+        Antes coordinaba todo por WhatsApp y siempre había algún malentendido con los horarios. Con Caleio mis clientas reservan solas y yo me entero al instante. Desde que activé el cobro de seña con MercadoPago, las inasistencias prácticamente desaparecieron.
+      </p>
+
+      <div class="flex items-center justify-center gap-3">
+        <div class="w-11 h-11 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold text-base shrink-0">
+          S
+        </div>
+        <div class="text-left">
+          <p class="text-sm font-semibold text-slate-900">Summer D.</p>
+          <p class="text-xs text-slate-400">Centro de Estética · <span class="text-teal-600">@sam.estetica</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="py-24 px-5 bg-teal-50/60 border-y border-slate-100">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-16">
+        <div class="inline-flex items-center gap-2 rounded-full bg-teal-50 border border-teal-100 px-3 py-1 text-xs font-semibold text-teal-600 uppercase tracking-wider mb-4">
+          Cómo funciona
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+          Empezá en 3 pasos simples
+        </h2>
+        <p class="text-lg text-slate-500">Sin configuraciones complejas. En menos de 10 minutos.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+        <!-- Step 1 -->
+        <div class="flex flex-col items-center text-center gap-4">
+          <div class="relative">
+            <div class="w-16 h-16 rounded-2xl bg-teal-600 flex items-center justify-center shadow-lg shadow-teal-200 mx-auto">
+              <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <line x1="19" y1="8" x2="19" y2="14"/>
+                <line x1="22" y1="11" x2="16" y2="11"/>
+              </svg>
+            </div>
+            <span class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-teal-50 border-2 border-teal-200 flex items-center justify-center text-[10px] font-bold text-teal-600">1</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900">Creá tu cuenta</h3>
+          <p class="text-sm text-slate-500 leading-relaxed max-w-xs">Registrate gratis, cargá tus servicios y configurá tus horarios disponibles. Listo en minutos.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="flex flex-col items-center text-center gap-4">
+          <div class="relative">
+            <div class="w-16 h-16 rounded-2xl bg-teal-600 flex items-center justify-center shadow-lg shadow-teal-200 mx-auto">
+              <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+                <circle cx="18" cy="5" r="3"/>
+                <circle cx="6" cy="12" r="3"/>
+                <circle cx="18" cy="19" r="3"/>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+              </svg>
+            </div>
+            <span class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-teal-50 border-2 border-teal-200 flex items-center justify-center text-[10px] font-bold text-teal-600">2</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900">Compartí tu link</h3>
+          <p class="text-sm text-slate-500 leading-relaxed max-w-xs">Enviá tu link personalizado a tus clientes. Ellos reservan solos, 24/7, sin necesidad de llamarte.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="flex flex-col items-center text-center gap-4">
+          <div class="relative">
+            <div class="w-16 h-16 rounded-2xl bg-teal-600 flex items-center justify-center shadow-lg shadow-teal-200 mx-auto">
+              <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+                <line x1="12" y1="20" x2="12" y2="10"/>
+                <line x1="18" y1="20" x2="18" y2="4"/>
+                <line x1="6" y1="20" x2="6" y2="16"/>
+              </svg>
+            </div>
+            <span class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-teal-50 border-2 border-teal-200 flex items-center justify-center text-[10px] font-bold text-teal-600">3</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900">Gestioná y cobrá</h3>
+          <p class="text-sm text-slate-500 leading-relaxed max-w-xs">Recibí pagos automáticos con MercadoPago, enviá recordatorios por WhatsApp y monitoreá tu negocio.</p>
+        </div>
+      </div>
+
+      <div class="text-center mt-14">
+        <a
+          href={APP_URL}
+          class="inline-flex items-center gap-2 rounded-xl bg-teal-600 px-8 py-4 text-base font-semibold text-white hover:bg-teal-700 transition-colors shadow-lg shadow-teal-200"
+        >
+          Empezar gratis
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="py-24 px-5 bg-white border-y border-slate-100">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-14">
+        <div class="inline-flex items-center gap-2 rounded-full bg-teal-50 border border-teal-100 px-3 py-1 text-xs font-semibold text-teal-600 uppercase tracking-wider mb-4">
+          Precios
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Precio simple, <span class="text-teal-600">todo incluido</span></h2>
+        <p class="text-lg text-slate-500">Pausalo o cancelalo cuando quieras. Sin comisiones, sin sorpresas.</p>
+      </div>
+
+      <div class="flex justify-center">
+
+        <!-- Plan Caleio -->
+        <div class="rounded-3xl bg-white border-2 border-teal-400 p-8 shadow-xl shadow-teal-100 relative w-full max-w-sm">
+          <!-- Badge -->
+          <div class="absolute -top-4 left-1/2 -translate-x-1/2">
+            <span class="inline-block bg-teal-500 text-white text-xs font-bold rounded-full px-4 py-1.5">Más popular</span>
+          </div>
+
+          <p class="text-lg font-bold text-slate-900 text-center mt-2 mb-5">Plan Caleio</p>
+
+          <!-- Price -->
+          <div class="flex items-end justify-center gap-1 mb-2">
+            <span id="price-currency" class="text-2xl font-semibold text-slate-900 leading-none mb-1">ARS</span>
+            <span id="price-amount" class="text-6xl font-extrabold text-slate-900 leading-none">15.000</span>
+            <span class="text-slate-400 text-base pb-1.5">/ mes</span>
+          </div>
+          <p id="price-extra" class="text-center text-sm font-medium text-teal-600 mb-2">+ ARS 6.500 por profesional adicional</p>
+          <p class="text-center text-xs font-semibold text-teal-700 bg-teal-50 border border-teal-100 rounded-full px-3 py-1 mb-7 inline-block w-full">14 días de prueba gratis</p>
+
+          <!-- Features -->
+          <ul class="space-y-3.5 mb-8">
+            {[
+              "Hasta 2 profesionales",
+              "Agenda completa",
+              "Clientes y servicios ilimitados",
+              "Dashboard y análisis",
+              "Soporte incluido",
+            ].map((item) => (
+              <li class="flex items-center gap-3 text-sm text-slate-700">
+                <svg class="w-4 h-4 text-teal-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                {item}
+              </li>
+            ))}
+          </ul>
+
+          <!-- CTA -->
+          <a
+            href={APP_URL}
+            class="flex items-center justify-center gap-2 w-full rounded-2xl bg-teal-500 px-5 py-4 text-base font-semibold text-white hover:bg-teal-600 transition-colors"
+          >
+            Empezar ahora
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+
+          <!-- Footer note -->
+          <p class="text-center text-xs text-slate-400 mt-4">
+            Sin comisiones &nbsp;·&nbsp; Sin contratos &nbsp;·&nbsp; Cancelá cuando quieras
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="py-24 px-5 bg-teal-50/60 border-y border-slate-100">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-14">
+        <div class="inline-flex items-center gap-2 rounded-full bg-teal-50 border border-teal-100 px-3 py-1 text-xs font-semibold text-teal-600 uppercase tracking-wider mb-4">
+          FAQ
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+          Preguntas frecuentes
+        </h2>
+        <p class="text-lg text-slate-500">Respondemos las dudas más comunes sobre Caleio</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <!-- Left promo -->
+        <div class="md:col-span-1 flex flex-col justify-start">
+          <div class="sticky top-24">
+            <h3 class="text-lg font-bold text-slate-900 mb-2">¿No encontraste lo que buscabas?</h3>
+            <p class="text-sm text-slate-500 mb-6 leading-relaxed">
+              Nuestro equipo está listo para ayudarte y resolver todas tus dudas.
+            </p>
+            <a
+              href="mailto:hola@caleio.app"
+              class="inline-flex items-center gap-2 rounded-xl bg-teal-600 text-white px-5 py-3 text-sm font-semibold hover:bg-teal-700 transition-colors"
+            >
+              Escribinos
+            </a>
+          </div>
+        </div>
+
+        <!-- Right accordion -->
+        <div class="md:col-span-2 space-y-3">
+          {faqs.map((faq) => (
+            <details class="group rounded-2xl border border-teal-100 bg-teal-50 shadow-sm overflow-hidden">
+              <summary class="flex items-center justify-between gap-4 cursor-pointer px-5 py-4 text-sm font-semibold text-slate-800 list-none hover:text-teal-600 transition-colors">
+                <span>{faq.question}</span>
+                <svg
+                  class="w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 group-open:rotate-180"
+                  fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+                >
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </summary>
+              <div class="faq-body overflow-hidden">
+                <div class="px-5 pb-4 text-sm text-slate-500 leading-relaxed border-t border-slate-100 pt-3">
+                  {faq.answer}
+                </div>
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="py-24 px-5 bg-teal-600 relative overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,var(--tw-gradient-stops))] from-teal-500/50 via-teal-600 to-teal-700 pointer-events-none" />
+    <div class="relative max-w-2xl mx-auto text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">
+        Registrate y Automatizá<br />el Cobro de Turnos
+      </h2>
+      <p class="text-teal-100 text-lg mb-10 leading-relaxed">
+        Probalo gratis 14 días, sin tarjeta de crédito. Cancelá cuando quieras.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a
+          href={APP_URL}
+          class="inline-block rounded-xl bg-white px-8 py-4 text-base font-semibold text-teal-700 hover:bg-teal-50 transition-colors shadow-lg"
+        >
+          Registrarse gratis
+        </a>
+        <a
+          href="#features"
+          class="inline-block rounded-xl border-2 border-white/40 px-8 py-4 text-base font-semibold text-white hover:border-white hover:bg-white/10 transition-colors"
+        >
+          Funcionalidades
+        </a>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-900 pt-16 pb-10 px-5">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
+        <!-- Brand -->
+        <div class="col-span-2 md:col-span-1">
+          <div class="flex items-center gap-2.5 mb-4">
+            <img src="/logo.png" alt="Caleio" class="w-8 h-8 object-contain opacity-90" />
+            <span class="text-base font-bold text-white">Caleio</span>
+          </div>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            La herramienta simple y profesional para manejar tu agenda de turnos.
+          </p>
+        </div>
+
+        <!-- Navegación -->
+        <div>
+          <p class="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-4">Navegación</p>
+          <ul class="space-y-2.5">
+            {[
+              { label: "Inicio", href: "#" },
+              { label: "Funcionalidades", href: "#features" },
+              { label: "Precios", href: "#pricing" },
+              { label: "FAQ", href: "#faq" },
+            ].map((link) => (
+              <li>
+                <a href={link.href} class="text-sm text-slate-400 hover:text-teal-400 transition-colors">{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Legal -->
+        <div>
+          <p class="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-4">Legal</p>
+          <ul class="space-y-2.5">
+            {[
+              { label: "Términos de uso", href: "/terminos" },
+              { label: "Privacidad", href: "/privacidad" },
+              { label: "Cookies", href: "/cookies" },
+            ].map((link) => (
+              <li>
+                <a href={link.href} class="text-sm text-slate-400 hover:text-teal-400 transition-colors">{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Negocios -->
+        <div>
+          <p class="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-4">Negocios y Profesionales</p>
+          <ul class="space-y-2.5">
+            {[
+              { label: "Peluquerías y Barberías", href: "#negocios" },
+              { label: "Centros de Estética", href: "#negocios" },
+              { label: "Psicólogos", href: "#negocios" },
+              { label: "Gimnasios", href: "#negocios" },
+              { label: "Manicura y Pedicura", href: "#negocios" },
+            ].map((link) => (
+              <li>
+                <a href={link.href} class="text-sm text-slate-400 hover:text-teal-400 transition-colors">{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-slate-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-sm text-slate-500">© {new Date().getFullYear()} Caleio. Todos los derechos reservados.</p>
+        <a href="mailto:hola@caleio.app" class="text-sm text-slate-500 hover:text-teal-400 transition-colors">
+          hola@caleio.app
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar: entrada suave al cargar
+    const navbar = document.getElementById("navbar")!;
+    navbar.style.opacity = "0";
+    navbar.style.transform = "translateY(-12px)";
+    requestAnimationFrame(() => {
+      navbar.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+      navbar.style.opacity = "1";
+      navbar.style.transform = "translateY(0)";
+    });
+
+    // Hamburger menu
+    const menuBtn = document.getElementById("menu-btn")!;
+    const mobileMenu = document.getElementById("mobile-menu")!;
+    const hamburgerLines = menuBtn.querySelectorAll(".hamburger-line");
+    let menuOpen = false;
+
+    function openMenu() {
+      menuOpen = true;
+      mobileMenu.classList.remove("max-h-0", "opacity-0");
+      mobileMenu.classList.add("max-h-96", "opacity-100", "py-4");
+      (hamburgerLines[0] as HTMLElement).style.transform = "translateY(8px) rotate(45deg)";
+      (hamburgerLines[1] as HTMLElement).style.opacity = "0";
+      (hamburgerLines[2] as HTMLElement).style.transform = "translateY(-8px) rotate(-45deg)";
+    }
+
+    function closeMenu() {
+      menuOpen = false;
+      mobileMenu.classList.add("max-h-0", "opacity-0");
+      mobileMenu.classList.remove("max-h-96", "opacity-100", "py-4");
+      (hamburgerLines[0] as HTMLElement).style.transform = "";
+      (hamburgerLines[1] as HTMLElement).style.opacity = "";
+      (hamburgerLines[2] as HTMLElement).style.transform = "";
+    }
+
+    menuBtn.addEventListener("click", () => {
+      menuOpen ? closeMenu() : openMenu();
+    });
+
+    // Close mobile menu on link click
+    document.querySelectorAll(".mobile-nav-link").forEach((link) => {
+      link.addEventListener("click", () => closeMenu());
+    });
+
+    // Country selector
+    const btn = document.getElementById("country-btn")!;
+    const dropdown = document.getElementById("country-dropdown")!;
+    const flagEl = document.getElementById("country-flag")!;
+
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle("hidden");
+    });
+
+    const priceCurrency = document.getElementById("price-currency")!;
+    const priceAmount = document.getElementById("price-amount")!;
+    const priceExtra = document.getElementById("price-extra")!;
+
+    function updatePrice(code: string) {
+      if (code === "ar") {
+        priceCurrency.textContent = "ARS";
+        priceAmount.textContent = "15.000";
+        priceExtra.textContent = "+ ARS 6.500 por profesional adicional";
+      } else {
+        priceCurrency.textContent = "USD";
+        priceAmount.textContent = "12";
+        priceExtra.textContent = "+ USD 5 por profesional adicional";
+      }
+    }
+
+    // Precio inicial según país por defecto (AR)
+    updatePrice("ar");
+
+    document.querySelectorAll(".country-option").forEach((opt) => {
+      opt.addEventListener("click", () => {
+        const code = (opt as HTMLElement).dataset.code!;
+        (flagEl as HTMLImageElement).src = `https://flagcdn.com/20x15/${code}.png`;
+        (flagEl as HTMLImageElement).alt = code.toUpperCase();
+        dropdown.classList.add("hidden");
+        updatePrice(code);
+      });
+    });
+
+    document.addEventListener("click", () => dropdown.classList.add("hidden"));
+
+    // Screenshot tabs
+    const screenTabs = document.querySelectorAll(".screen-tab");
+    const screenImages = ["agenda", "dashboard", "metricas"];
+
+    screenTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const screen = (tab as HTMLElement).dataset.screen!;
+
+        screenTabs.forEach((t) => {
+          t.classList.remove("bg-teal-600", "text-white");
+          t.classList.add("bg-white/10", "text-slate-300");
+        });
+        tab.classList.add("bg-teal-600", "text-white");
+        tab.classList.remove("bg-white/10", "text-slate-300");
+
+        screenImages.forEach((s) => {
+          const el = document.getElementById(`screen-${s}`)!;
+          el.classList.add("hidden");
+          el.classList.remove("block");
+        });
+        const target = document.getElementById(`screen-${screen}`)!;
+        target.classList.remove("hidden");
+        target.classList.add("block");
+      });
+    });
+
+    // FAQ smooth open
+    document.querySelectorAll("details").forEach((details) => {
+      const summary = details.querySelector("summary")!;
+      const body = details.querySelector(".faq-body") as HTMLElement;
+
+      summary.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        if (details.open) {
+          const anim = body.animate(
+            [{ height: body.scrollHeight + "px" }, { height: "0px" }],
+            { duration: 280, easing: "ease-in-out" }
+          );
+          anim.onfinish = () => details.removeAttribute("open");
+        } else {
+          details.setAttribute("open", "");
+          body.animate(
+            [{ height: "0px" }, { height: body.scrollHeight + "px" }],
+            { duration: 280, easing: "ease-in-out" }
+          );
+        }
+      });
+    });
+  </script>
+</Layout>
