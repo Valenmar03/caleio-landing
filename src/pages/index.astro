@@ -27,7 +27,7 @@ const faqs = [
   {
     question: "¿Caleio es gratis?",
     answer:
-      "Tenés 14 días de prueba gratuita con acceso a todas las funciones, sin tarjeta de crédito. Luego el plan es de USD $12 por hasta 2 profesionales, todo incluido.",
+      "Tenés 14 días de prueba gratuita con acceso a todas las funciones, sin tarjeta de crédito. Luego el plan es de USD $18 por hasta 2 profesionales, todo incluido.",
   },
   {
     question: "¿Es necesario que mis clientes se registren para reservar un turno?",
@@ -573,10 +573,10 @@ const businesses = [
           <!-- Price -->
           <div class="flex items-end justify-center gap-1 mb-2">
             <span id="price-currency" class="text-2xl font-semibold text-slate-900 leading-none mb-1">ARS</span>
-            <span id="price-amount" class="text-6xl font-extrabold text-slate-900 leading-none">15.000</span>
+            <span id="price-amount" class="text-6xl font-extrabold text-slate-900 leading-none">16.000</span>
             <span class="text-slate-400 text-base pb-1.5">/ mes</span>
           </div>
-          <p id="price-extra" class="text-center text-sm font-medium text-teal-600 mb-2">+ ARS 6.500 por profesional adicional</p>
+          <p id="price-extra" class="text-center text-sm font-medium text-teal-600 mb-2">+ ARS 7.000 por profesional adicional</p>
           <p class="text-center text-xs font-semibold text-teal-700 bg-teal-50 border border-teal-100 rounded-full px-3 py-1 mb-7 inline-block w-full">14 días de prueba gratis</p>
 
           <!-- Features -->
@@ -886,12 +886,12 @@ const businesses = [
     function updatePrice(code: string) {
       if (code === "ar") {
         priceCurrency.textContent = "ARS";
-        priceAmount.textContent = "15.000";
-        priceExtra.textContent = "+ ARS 6.500 por profesional adicional";
+        priceAmount.textContent = "16.000";
+        priceExtra.textContent = "+ ARS 7.000 por profesional adicional";
       } else {
         priceCurrency.textContent = "USD";
-        priceAmount.textContent = "12";
-        priceExtra.textContent = "+ USD 5 por profesional adicional";
+        priceAmount.textContent = "18";
+        priceExtra.textContent = "+ USD 7 por profesional adicional";
       }
     }
 
