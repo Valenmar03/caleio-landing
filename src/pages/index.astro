@@ -1,7 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-const APP_URL = "https://app.caleio.app/register";
+const APP_URL_REGISTER = "https://app.caleio.app/register";
+const APP_URL_LOGIN = "https://app.caleio.app/login";
 
 const faqs = [
   {
@@ -131,15 +132,15 @@ const businesses = [
         </div>
 
         <!-- Desktop buttons -->
-        <a href={APP_URL} class="hidden md:block text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+        <a href={APP_URL_LOGIN} class="hidden md:block text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
           Ingresar
         </a>
-        <a href={APP_URL} class="hidden md:block rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700 transition-colors">
+        <a href={APP_URL_REGISTER} class="hidden md:block rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700 transition-colors">
           Registrarse gratis
         </a>
 
         <!-- Mobile register button -->
-        <a href={APP_URL} class="md:hidden rounded-lg bg-teal-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-teal-700 transition-colors">
+        <a href={APP_URL_REGISTER} class="md:hidden rounded-lg bg-teal-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-teal-700 transition-colors">
           Registrarse
         </a>
 
@@ -160,10 +161,10 @@ const businesses = [
       <a href="#pricing" class="mobile-nav-link block py-2.5 text-sm font-medium text-slate-700 hover:text-teal-600 transition-colors border-b border-slate-100">Precios</a>
       <a href="#faq" class="mobile-nav-link block py-2.5 text-sm font-medium text-slate-700 hover:text-teal-600 transition-colors border-b border-slate-100">FAQ</a>
       <div class="pt-3 flex flex-col gap-2">
-        <a href={APP_URL} class="block w-full text-center rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:border-teal-400 hover:text-teal-600 transition-colors">
+        <a href={APP_URL_LOGIN} class="block w-full text-center rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:border-teal-400 hover:text-teal-600 transition-colors">
           Ingresar
         </a>
-        <a href={APP_URL} class="block w-full text-center rounded-xl bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-teal-700 transition-colors">
+        <a href={APP_URL_REGISTER} class="block w-full text-center rounded-xl bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-teal-700 transition-colors">
           Registrarse gratis
         </a>
       </div>
@@ -193,7 +194,7 @@ const businesses = [
       <div class="flex flex-col items-center gap-4 mb-14">
         <div class="flex flex-col sm:flex-row items-center gap-3">
           <a
-            href={APP_URL}
+            href={APP_URL_REGISTER}
             class="rounded-xl bg-teal-600 px-10 py-4 text-base font-semibold text-white hover:bg-teal-700 transition-colors shadow-lg shadow-teal-200"
           >
             Creá tu cuenta gratis
@@ -536,7 +537,7 @@ const businesses = [
 
       <div class="text-center mt-14">
         <a
-          href={APP_URL}
+          href={APP_URL_REGISTER}
           class="inline-flex items-center gap-2 rounded-xl bg-teal-600 px-8 py-4 text-base font-semibold text-white hover:bg-teal-700 transition-colors shadow-lg shadow-teal-200"
         >
           Empezar gratis
@@ -599,7 +600,7 @@ const businesses = [
 
           <!-- CTA -->
           <a
-            href={APP_URL}
+            href={APP_URL_REGISTER}
             class="flex items-center justify-center gap-2 w-full rounded-2xl bg-teal-500 px-5 py-4 text-base font-semibold text-white hover:bg-teal-600 transition-colors"
           >
             Empezar ahora
@@ -703,7 +704,7 @@ const businesses = [
       </p>
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
         <a
-          href={APP_URL}
+          href={APP_URL_REGISTER}
           class="inline-block rounded-xl bg-white px-8 py-4 text-base font-semibold text-teal-700 hover:bg-teal-50 transition-colors shadow-lg"
         >
           Registrarse gratis
